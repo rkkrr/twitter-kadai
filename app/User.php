@@ -7,6 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+     public function microposts()
+    {
+        return $this->hasMany(Micropost::class);
+    }
     use Notifiable;
 
     /**
@@ -27,3 +31,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 }
+
+// 
+?>
