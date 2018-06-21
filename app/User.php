@@ -26,6 +26,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+        
+    public function microposts()
+    {
+        return $this->hasMany(Micropost::class);
+    }
+
     public function followings()
     {
         return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'follow_id')->withTimestamps();
