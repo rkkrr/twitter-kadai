@@ -42,7 +42,6 @@ class UsersController extends Controller
         ];
 
         $data += $this->counts($user);
- print 'Hello';exit;
         return view('users.followings', $data);
     }
 

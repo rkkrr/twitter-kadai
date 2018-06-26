@@ -32,18 +32,13 @@ class User extends Authenticatable
         return $this->hasMany(Micropost::class);
     }
 
-    public function followings()
-    {
-        return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'follow_id')->withTimestamps();
-    }
-
-    public function followers()
+   public function followers()
     {
         return $this->belongsToMany(User::class, 'user_follow', 'follow_id', 'user_id')->withTimestamps();
     }
     
     public function follow($userId)
-{
+    {  
     // confirm if already following
     $exist = $this->is_following($userId);
     // confirming that it is not you
@@ -57,7 +52,7 @@ class User extends Authenticatable
         $this->followings()->attach($userId);
         return true;
     }
-}
+    }
 
 public function unfollow($userId)
 {
@@ -76,7 +71,11 @@ public function unfollow($userId)
         return false;
     }
 }
-
+public function followings()
+{
+    return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'follow_id')->withTimestamps();
+    //多対多の関係を作りたい、ユーザーフォローテーブルにとんでユーザIDとフォローIDとをつなげてあげる
+}
 
 public function is_following($userId) {
     return $this->followings()->where('follow_id', $userId)->exists();
@@ -88,7 +87,52 @@ public function is_following($userId) {
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
     }
+    
+public function favouritings()
+{
+    return $this->belongsToMany(Micropost::class, 'user_favourite',  'user_id', 'micropost_id')->withTimestamps();
 }
+
+
+public function favourites($micropostId)
+{
+        // confirm if already favouriting
+    $exist = $this->is_favouriting($micropostId);
+   
+
+    if ($exist) {
+        // do nothing if already favouriting
+        return false;
+    } else {
+        // favourite if not favouriting
+        $this->favouritings()->attach($micropostId);
+        return true;
+    }
+}
+
+public function unfavourites($micropostId)
+{
+      // confirming if already following
+    $exist = $this->is_favouriting($micropostId);
+   
+
+    if ($exist) {
+        // stop favouriting if favouriting
+        $this->favouritings()->detach($micropostId);
+        return true;
+    } else {
+        // do nothing if not following
+        return false;
+    }
+}
+
+           
+ public function is_favouriting($micropostId) {
+    return $this->favouritings()->where($micropostId, 'micropost_id')->exists();
+}      
+
+}
+
 
 // 
 ?>
