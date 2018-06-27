@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User; // add
+use App\Micropost;
 
 class UserFavouritesController extends Controller
 {
@@ -19,15 +21,14 @@ class UserFavouritesController extends Controller
     }//DELETE
     
     public function favourites($id)
-    {
+    { 
         $user = User::find($id);
         $favourites = $user->favouritings()->paginate(10);
 
         $data = [
             'user' => $user,
-            'users' => $favouritings,
+            'microposts' => $favourites,
         ];
-
         $data += $this->counts($user);
         return view('users.favourites', $data);
     

@@ -9,6 +9,7 @@
                 </div>
                 <div class="panel-body">
                     <img class="media-object img-rounded img-responsive" src="{{ Gravatar::src($user->email, 500) }}" alt="">
+                    <p>{!! link_to_route('users.show', 'Favourites', ['id' => $user->id]) !!}</p>
                 </div>
             </div>
             @include('user_follow.follow_button', ['user' => $user])
@@ -18,8 +19,7 @@
                 <li role="presentation" class="{{ Request::is('users/' . $user->id) ? 'active' : '' }}"><a href="{{ route('users.show', ['id' => $user->id]) }}">TimeLine <span class="badge">{{ $count_microposts }}</span></a></li>
                 <li role="presentation" class="{{ Request::is('users/*/followings') ? 'active' : '' }}"><a href="{{ route('users.followings', ['id' => $user->id]) }}">Followings <span class="badge">{{ $count_followings }}</span></a></li>
                 <li role="presentation" class="{{ Request::is('users/*/followers') ? 'active' : '' }}"><a href="{{ route('users.followers', ['id' => $user->id]) }}">Followers <span class="badge">{{ $count_followers }}</span></a></li>
-                <li role="presentation" class="{{ Request::is('users/*/favourites')? 'active' : '' }}"><a href="{{ route('users.favourites', ['id => $user->id]) }}">Favourites <span class="badge">{{ $count_favourites }}</span></a></li>
-            </ul>
+                <li role="presentation" class="{{ Request::is('users/*/favouritings') ? 'active' : '' }}"><a href="{{ route('users.favouritings', ['id' => $user->id]) }}">Favourites <span class="badge">{{ $count_favourites }}</span></a></li>            </ul>
             @include('users.users', ['users' => $users])
         </div>
     </div>
